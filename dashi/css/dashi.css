@@ -1,0 +1,61 @@
+.bg-purp-canada-ca {
+    background-color: #3f2a56;
+}
+
+.bg-darker {
+    background-color: #222;
+}
+
+
+#chart_events_participation {
+    width: 100%;
+    height: 15em;
+}
+
+#chart_engagements_participation {
+    width: 100%;
+    height: 15em;
+}
+
+#chart_engagement_thermo {
+    width: 100%;
+    height: 17em;
+}
+
+#chart_summary_thermo {
+    width: 100%;
+    height: 20em;
+}
+
+#chart_timeline {
+    width: 100%;
+    height: 20em;
+}
+
+#format_data_container {
+    display: none;
+}
+
+#format_errors_container {
+    display: none;
+}
+
+.banner-metric {
+    width: 1.5em;
+}
+
+.display-4 {
+    font-size: 2.5rem;
+}
+
+.lead {
+    font-size: 1.2rem;
+}
+
+.bg-primary{
+    background-color: #006FE6!important; /*accessibility fix*/
+}
+
+.btn-primary{
+    background-color: #006FE6!important; /*accessibility fix*/
+}
