@@ -1,4 +1,52 @@
+
+
+
+//cardex
 var cardex = (function () {
+    //
+    // PLUGINS
+    //
+
+    var $table = $('#cardex-sortable');
+    $table.bootstrapTable({ data: [] });
+
+
+    $(function () {
+        var $button = $('#cardex-sortable-remove');
+        $button.click(function () {
+            var ids = $.map($table.bootstrapTable('getSelections'), function (row) {
+                return row.id
+            })
+            $table.bootstrapTable('remove', {
+                field: 'id',
+                values: ids
+            })
+        })
+    })
+
+
+    $(function () {
+        var $button = $('#cardex-sortable-edit');
+        $button.click(function () {
+            var ids = $.map($table.bootstrapTable('getSelections'), function (row) {
+                return row.id
+            })
+
+            ids = ids[0] ? ids[0] : ids;
+
+            var pack = $table.bootstrapTable('getRowByUniqueId', ids);
+
+            var input = prompt("Edit Stub", `#who ${pack.who} #where ${pack.where} #what ${pack.what} #why ${pack.why} #when ${pack.when} #more ${pack.more}`);
+            var pack = parse_input(input, ids);
+            $table.bootstrapTable('updateByUniqueId', { id: ids, row: pack });
+        })
+    })
+
+
+
+    //
+    // CARDEX CORE
+    //
     var synth = window.speechSynthesis;
     var pitchValue = 1;
     var rateValue = 1.3; // cross browser note, this isn't consistent across them. This might be too fast, consider user settable
@@ -10,7 +58,8 @@ var cardex = (function () {
     };
 
     var pack_items = 0;
-    var process_speech_text = function (inv, edit_id) {
+    var cardex_data = [];
+    var parse_input = function (inv, edit_id) {
         // #who sinan b #where csps #what developer analyst advisor #when 3/5/2020 #why to make it easier #more cool eh?
         var pack = {};
         if (typeof edit_id === "undefined") {
@@ -38,6 +87,26 @@ var cardex = (function () {
                 pack[key] = tk;
             }
         }
+
+        var data_point = {
+            "id": pack.id,
+            "who": pack.who,
+            "where": pack.where,
+            "what": pack.what,
+            "why": pack.why,
+            "when": pack.when,
+            "more": pack.more
+        };
+        return data_point;
+    };
+    var process_speech_text = function (inv, edit_id) {
+        var data_point = parse_input(inv, edit_id);
+        cardex_data.push(data_point);
+        $(function () {
+            $table.bootstrapTable('append', data_point);
+        })
+
+        /*
         document.getElementById('cardex_result').innerHTML += `
                     <tr id="cardex-container-${pack.id}">
                         <td><span class="badge badge-secondary">${pack.id}</span></th>
@@ -54,7 +123,7 @@ var cardex = (function () {
         if (typeof edit_id === "undefined") {
             bind_edit_btn(pack.id);
             bind_delete_btn(pack.id);
-        }
+        }*/
     };
 
     var recognition_lang = "en-US";
@@ -190,3 +259,4 @@ var cardex = (function () {
 })();
 
 cardex.start();
+
